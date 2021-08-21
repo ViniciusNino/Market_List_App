@@ -1,0 +1,16 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>solicitacao</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content color="primary">
+    <ion-list>
+        <ion-item *ngFor="let item of itens" color="primary">
+            <ion-label>{{item.sNome}} - {{item.sUnidadeMedida}} </ion-label>
+            <ion-input cssClass="direita" [(ngModel)]="item.nQuantidade" type="number" min="0" placeholder="0"></ion-input>
+        </ion-item>
+    </ion-list>
+    <ion-button expand="full" (click)="confirmar()">Confirmar Lista</ion-button>
+    <ion-button expand="full" (click)="cancelar()">Cancelar</ion-button>
+</ion-content>

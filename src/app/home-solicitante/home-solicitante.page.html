@@ -1,0 +1,28 @@
+<ion-header>
+    <ion-toolbar>
+        <div class="header">
+            <ion-title class="ion-title">Solicitante</ion-title>
+            <a href="/#/logout" style="color: #f8f5f5">Sair</a>
+        </div>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content color="primary" padding>
+    <form #form="ngForm">
+        <ion-grid>
+            <ion-row color="primary" justify-content-center>
+                <ion-col align-self-center size-md="6" size-lg="5" size-xs="12">
+                    <div>
+                        <h3>{{unidade}}</h3>
+                    </div>
+                    <ion-list>
+                        <ion-item color="primary" *ngFor="let lista of listas">
+                            <ion-label (click)="selecionarLista(lista)">{{lista.dCadastro | date: 'dd-MM-yyyy HH:mm'}} </ion-label>
+                        </ion-item>
+                    </ion-list>
+                    <ion-button expand="full" (click)="cadastrarNovaLista()">Cadastrar Nova Lista</ion-button>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </form>
+</ion-content>
