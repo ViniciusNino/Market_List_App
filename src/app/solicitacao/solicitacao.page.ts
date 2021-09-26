@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router} from '@angular/router';
+import { USUARIO } from '../shared/usuario/constants';
+import { IUsuario } from '../shared/usuario/interfaces';
+import { API } from 'src/environments/environment';
+import { IItem } from '../shared/item/item.interfaces';
+import { SolicitacaoApi } from './socilitacao.api';
 
 @Component({
   selector: 'app-solicitacao',
@@ -8,30 +13,32 @@ import { Router} from '@angular/router';
   styleUrls: ['./solicitacao.page.scss'],
 })
 export class SolicitacaoPage implements OnInit {
-  private API_URL = 'http://localhost:5000/'
-  public itens: any
-  constructor(public http: HttpClient, private router: Router) {
+  private API_URL = API;
+  itens: IItem[];
+  usuarioLogado: IUsuario;
+
+  constructor(
+    readonly solicitacaoApi: SolicitacaoApi,
+    private router: Router,
+    private http: HttpClient
+    ){}
+    
+    ngOnInit() {
+    this.usuarioLogado = JSON.parse(localStorage.getItem(USUARIO.USUARIOAUTENTICAR));
     this.listar_itens()
   }
 
-  ngOnInit() {
-  }
-
-  public listar_itens()
+  async listar_itens()
   {
-    this.http.get(this.API_URL+"item/get").subscribe((response) => {
-      this.itens = response
-    });
+    this.itens = await this.solicitacaoApi.getItemPorUnidade(this.usuarioLogado.unidadeId);
   }
 
   public confirmar()
   {
     let vmItem = []
-    let usuarioAutenticado = JSON.parse(localStorage.getItem('userData'));
-
     this.itens.forEach(element => {
-      if(element.nQuantidade != 0){
-        element.nIdUsuarioLogado = usuarioAutenticado["nIdUsuarioAutenticado"];
+      if(element.quantidade != 0){
+        element.usuarioLogadoId = this.usuarioLogado.id;
         vmItem.push(element)
       }
     });
