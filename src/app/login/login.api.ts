@@ -11,8 +11,7 @@ export class LoginApi {
     constructor(readonly http: HttpProvider) {}
 
     async getUsuarioAutenticado(dadosAutenticacao: IDadosAutenticacao): Promise<IUsuario> {
-        const body = dadosAutenticacao;
 
-        return this.http.get<IUsuario>(Login.AUTENTICAR, body).toPromise();
+        return this.http.get<IUsuario>(Login.AUTENTICAR, dadosAutenticacao).toPromise();
     }
 }
