@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController, NavParams } from '@ionic/angular';
+import { ModalController } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
+import { USUARIO } from '../shared/usuario/constants';
 
 @Component({
   selector: 'app-modal-solicitacao',
@@ -23,7 +24,7 @@ export class ModalSolicitacaoComponent implements OnInit {
   public adicionar(){
     
     let vmItens = [];
-    let usuarioAutenticado = JSON.parse(localStorage.getItem('userData'));
+    let usuarioAutenticado = JSON.parse(localStorage.getItem(USUARIO.USUARIOAUTENTICAR));
     
     this.itens.forEach(element => {
       if(element.nQuantidade != 0){

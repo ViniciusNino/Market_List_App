@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { ControlContainer } from '@angular/forms';
+import { USUARIO } from '../shared/usuario/constants';
 
 @Component({
   selector: 'app-home-solicitante',
@@ -17,7 +17,7 @@ export class HomeSolicitantePage implements OnInit {
   }
 
   ngOnInit() {
-    let usuarioAutenticado = JSON.parse(localStorage.getItem('userData'));
+    let usuarioAutenticado = JSON.parse(localStorage.getItem(USUARIO.USUARIOAUTENTICAR));
     this.unidade = usuarioAutenticado.sNomeUnidade;
 
     this.http.get(this.API_URL+"lista/GetPorUnidade?id="+ usuarioAutenticado.nIdUnidade).subscribe((response) => {
