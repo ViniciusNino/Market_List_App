@@ -15,4 +15,9 @@ export class SolicitacaoApi {
        
         return this.http.get<IItem[]>(SOLICITACAO.GET_ITEM, params).toPromise();
     }
+
+    async postItensParaComprar(parans: IItem[]): Promise<boolean> {
+
+        return this.http.post<boolean>(SOLICITACAO.POST_ITENS_COMPRA, parans).toPromise();
+    }
 }
