@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ROUTES } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { USUARIO } from '../shared/usuario/constants';
 import { IUsuario } from '../shared/usuario/interfaces';
 import { HomeSolicitanteApi } from './home-solicitante.api';
 import { ILista } from '../shared/Lista/interfaces';
 import { NavController } from '@ionic/angular';
+import { ROUTES_COMPONENTS } from '../app-const.route';
 
 @Component({
   selector: 'app-home-solicitante',
@@ -18,6 +19,7 @@ export class HomeSolicitantePage implements OnInit {
 
   constructor (
     private router: Router,
+    private navCtrl: NavController,
     readonly homeSolicitanteApi: HomeSolicitanteApi
     ) {}
 
@@ -31,6 +33,6 @@ export class HomeSolicitantePage implements OnInit {
   }
 
   public selecionarLista(lista){
-    this.router.navigate(['listar-itens'], {queryParams: lista});
+    this.router.navigate([ROUTES_COMPONENTS.LISTAR_ITENS], {queryParams: lista});
   }
 }
