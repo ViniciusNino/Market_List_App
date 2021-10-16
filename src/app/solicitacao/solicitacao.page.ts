@@ -13,15 +13,12 @@ import { SolicitacaoApi } from './socilitacao.api';
   styleUrls: ['./solicitacao.page.scss'],
 })
 export class SolicitacaoPage implements OnInit {
-  private API_URL = API;
   itens: IItem[];
-  itensParaCompra: IItem[];
   usuarioLogado: IUsuario;
 
   constructor(
     readonly solicitacaoApi: SolicitacaoApi,
     private router: Router,
-    private http: HttpClient
     ){}
     
     ngOnInit() {
@@ -36,30 +33,31 @@ export class SolicitacaoPage implements OnInit {
 
   async confirmar()
   {
-    if(this.itensParaCompra.length > 0){
-      // const salvo = await this.solicitacaoApi.
-      this.http.post(this.API_URL+"ItemLista/Post", this.itensParaCompra).subscribe((response) => {
-        if(response == true){
-          this.router.navigateByUrl("home-solicitante");
-        }
-      });
-    }else{
+    const itensParaCompra = this.montarListaCompra(this.itens)
+    if(itensParaCompra.length > 0){
+      const salvo = await this.solicitacaoApi.postItensParaComprar(itensParaCompra);
+      if(salvo){
+        this.cancelar()
+      }
+    } else{
       alert("Selecione no mínimo 1 item para compra.")
     }
   }
 
-  public cancelar()
+  cancelar()
   {
     this.router.navigateByUrl("home-solicitante");
   }
 
-  montarListaCompra()
+  montarListaCompra(itens: IItem[])
   {
-    this.itens.forEach(element => {
+    let itensParaCompra: IItem[];    
+    itens.forEach(element => {
       if(element.quantidade != 0){
         element.usuarioLogadoId = this.usuarioLogado.id;
-        this.itensParaCompra.push(element);
+        itensParaCompra.push(element);
       }
     });
+    return itensParaCompra;
   }
 }
