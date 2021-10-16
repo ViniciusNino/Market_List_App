@@ -21,7 +21,12 @@ const routes: Routes = [
   {
     path: 'home-solicitante',
     loadChildren: () => import('./home-solicitante/home-solicitante.module').then( m => m.HomeSolicitantePageModule)
+  },
+  {
+    path: 'listar-itens',
+    loadChildren: () => import('./listar-itens/listar-itens.module').then( m => m.ListarItensPageModule)
   }
+
 
 ];
 @NgModule({

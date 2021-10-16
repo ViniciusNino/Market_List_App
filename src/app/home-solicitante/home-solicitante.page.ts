@@ -1,7 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ROUTES } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { USUARIO } from '../shared/usuario/constants';
+import { IUsuario } from '../shared/usuario/interfaces';
+import { HomeSolicitanteApi } from './home-solicitante.api';
+import { ILista } from '../shared/Lista/interfaces';
+import { NavController } from '@ionic/angular';
+import { ROUTES_COMPONENTS } from '../app-const.route';
 
 @Component({
   selector: 'app-home-solicitante',
@@ -9,20 +14,18 @@ import { USUARIO } from '../shared/usuario/constants';
   styleUrls: ['./home-solicitante.page.scss'],
 })
 export class HomeSolicitantePage implements OnInit {
-  private API_URL = 'http://localhost:5000/'
-  public unidade: any;
-  public listas: any;
+  public usuario: IUsuario;
+  public listas: ILista[];
 
-  constructor(private router: Router, public http: HttpClient) { 
-  }
+  constructor (
+    private router: Router,
+    private navCtrl: NavController,
+    readonly homeSolicitanteApi: HomeSolicitanteApi
+    ) {}
 
-  ngOnInit() {
-    let usuarioAutenticado = JSON.parse(localStorage.getItem(USUARIO.USUARIOAUTENTICAR));
-    this.unidade = usuarioAutenticado.sNomeUnidade;
-
-    this.http.get(this.API_URL+"lista/GetPorUnidade?id="+ usuarioAutenticado.nIdUnidade).subscribe((response) => {
-      this.listas = response;
-    });
+  async ngOnInit() {
+    this.usuario = JSON.parse(localStorage.getItem(USUARIO.USUARIOAUTENTICAR));
+    this.listas = await this.homeSolicitanteApi.getListPorUnidade(this.usuario.unidadeId)
   }
   
   public cadastrarNovaLista(){
@@ -30,6 +33,6 @@ export class HomeSolicitantePage implements OnInit {
   }
 
   public selecionarLista(lista){
-    this.router.navigate(['listar-itens'], {queryParams: {id: lista["nIdLista"], data: lista["dCadastro"], nome: lista["sNome"]}});
+    this.router.navigate([ROUTES_COMPONENTS.LISTAR_ITENS], {queryParams: lista});
   }
 }

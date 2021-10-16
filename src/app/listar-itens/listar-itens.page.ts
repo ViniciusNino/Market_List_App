@@ -5,6 +5,9 @@ import { AlertController, ModalController } from '@ionic/angular'
 import { proxyInputs } from '@ionic/angular/directives/proxies-utils'
 import { ModalSolicitacaoComponent } from '../modal-solicitacao/modal-solicitacao.component'
 import { element } from 'protractor'
+import { IItemLista } from '../shared/itemLista/interfaces'
+import { ILista } from '../shared/Lista/interfaces'
+import { ListarItensApi } from './listar-itens.api'
 
 @Component({
   selector: 'app-listar-itens',
@@ -13,23 +16,26 @@ import { element } from 'protractor'
 })
 export class ListarItensPage implements OnInit {
   private API_URL = 'http://localhost:5000/'
-  lista: any;
+  lista: ILista;
   vmItens:any;
-  lItensLista: any;
+  lItensLista: IItemLista[];
   teveAlteracao: any = false;
 
-  constructor(private activateRoute: ActivatedRoute, public alertController: AlertController,
-    private router: Router, public http: HttpClient, private modalCtrl: ModalController) { 
+  constructor(
+    readonly listarItensApi: ListarItensApi,
+    public http: HttpClient, 
+    public alertController: AlertController,
+    private activateRoute: ActivatedRoute, 
+    private router: Router, 
+    private modalCtrl: ModalController) { 
   }
 
-  ngOnInit() {
-    this.activateRoute.queryParams.subscribe(parametros => {
+  async ngOnInit() {
+    this.activateRoute.queryParams.subscribe((parametros: ILista) => {
       this.lista = parametros
     });
-    
-    this.http.get(this.API_URL+ "itemLista/GetItemLista?id="+ this.lista["id"]).subscribe((response) =>{
-      this.lItensLista = response;
-    });
+
+    this.lItensLista = await this.listarItensApi.getItemListaPorListaId(this.lista.nIdLista);
   }
 
   async alterarItem(itemLista, index, quantidade) {
@@ -85,7 +91,7 @@ export class ListarItensPage implements OnInit {
           this.lItensLista.push(item);
         });
       }
-      this.http.post(this.API_URL+ "itemLista/PostAlualizarItens?id="+this.lista.id, this.lItensLista).subscribe((response) => {
+      this.http.post(this.API_URL+ "itemLista/PostAlualizarItens?id="+this.lista.nIdLista, this.lItensLista).subscribe((response) => {
         if(response)
           this.cancelar();
       });
