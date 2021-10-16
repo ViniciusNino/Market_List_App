@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
-import { USUARIO } from '../shared/usuario/constants';
+import { USUARIO } from '../../shared/usuario/constants';
 
 @Component({
   selector: 'app-modal-solicitacao',

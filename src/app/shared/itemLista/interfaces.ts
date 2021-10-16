@@ -1,5 +1,6 @@
 export interface IItemLista {
     sNome: string,
     sUnidadeMedida: string,
-    nQuantidade: number
+    nQuantidade: number,
+    nIdItem: number
 }

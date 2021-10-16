@@ -4,6 +4,7 @@ import { FormsModule } from "@angular/forms";
 import { IonicModule } from "@ionic/angular";
 import { ListarItensPageRoutingModule } from "./listar-itens-routing.module";
 import { ListarItensPage } from "./listar-itens.page";
+import { ModalSolicitacaoComponent } from "./modal-solicitacao/modal-solicitacao.component";
 
 @NgModule ({
     imports: [
@@ -12,7 +13,11 @@ import { ListarItensPage } from "./listar-itens.page";
         IonicModule,
         ListarItensPageRoutingModule
     ],
-    declarations: [ListarItensPage]
+    declarations: [
+        ListarItensPage,
+        ModalSolicitacaoComponent
+    ],
+    entryComponents: [ModalSolicitacaoComponent]
 })
 
 export class ListarItensPageModule {}
