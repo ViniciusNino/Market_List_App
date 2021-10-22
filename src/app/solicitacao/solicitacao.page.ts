@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Router} from '@angular/router';
 import { USUARIO } from '../shared/usuario/constants';
 import { IUsuario } from '../shared/usuario/interfaces';
-import { API } from 'src/environments/environment';
 import { IItem } from '../shared/item/item.interfaces';
 import { SolicitacaoApi } from './socilitacao.api';
+import { IItemLista } from '../shared/itemLista/interfaces';
 
 @Component({
   selector: 'app-solicitacao',
@@ -43,21 +42,22 @@ export class SolicitacaoPage implements OnInit {
       alert("Selecione no mínimo 1 item para compra.")
     }
   }
-
-  cancelar()
-  {
-    this.router.navigateByUrl("home-solicitante");
-  }
-
+  
   montarListaCompra(itens: IItem[])
   {
-    let itensParaCompra: IItem[];    
-    itens.forEach(element => {
-      if(element.quantidade != 0){
-        element.usuarioLogadoId = this.usuarioLogado.id;
-        itensParaCompra.push(element);
-      }
+    let itensListaNovo = [] as IItemLista[];    
+    const itensSelecionados = itens.filter(x => x.quantidade > 0);    
+    itensSelecionados.forEach(item => {
+      let itemLista = {} as IItemLista;
+      itemLista.usuarioLogadoId = this.usuarioLogado.id;
+      itemLista.quantidade = item.quantidade;
+      itemLista.itemId = item.id;
+      itensListaNovo.push(itemLista);
     });
-    return itensParaCompra;
+    return itensListaNovo;
+  }
+
+  cancelar() {
+    this.router.navigateByUrl("home-solicitante");
   }
 }

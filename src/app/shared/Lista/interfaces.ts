@@ -1,6 +1,6 @@
 export interface ILista {
-    nIdLista: number,
-    sNome: string,
-    sNomeUsuario: string,
-    dCadastro: Date
+    id: number,
+    nome: string,
+    nomeUsuario: string,
+    cadastro: Date
 }

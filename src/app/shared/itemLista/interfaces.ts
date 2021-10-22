@@ -1,6 +1,9 @@
 export interface IItemLista {
-    sNome: string,
-    sUnidadeMedida: string,
-    nQuantidade: number,
-    nIdItem: number
+    id: number, 
+    nome: string,
+    unidadeMedida: string,
+    quantidade: number,
+    usuarioLogadoId: number,
+    itemId: number,
+    listaId: number
 }

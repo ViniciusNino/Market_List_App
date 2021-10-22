@@ -14,16 +14,16 @@
             <ion-col align-self-center size-md="6" size-lg="5" size-xs="12">
                 <div>
                     <h2>{{lista.nome}}</h2>
-                    <h5>Data: {{lista.data | date: 'dd-MM-yy'}}</h5>
+                    <h5>Data: {{lista.cadastro | date: 'dd-MM-yy'}}</h5>
                 </div>
                 <ion-list>
-                    <ion-item color="primary" *ngFor="let itemLista of itensListaApi; let i = index">
-                        <ion-label (click)="alterarItem(itemLista)">{{itemLista.sNome}} - {{itemLista.sUnidadeMedida}} </ion-label>
-                        <ion-label Class="direita">{{itemLista.nQuantidade}}</ion-label>
+                    <ion-item color="primary" *ngFor="let itemLista of itensListaApi">
+                        <ion-label (click)="alterarItem(itemLista)">{{itemLista.nome}} - {{itemLista.unidadeMedida}} </ion-label>
+                        <ion-label Class="direita">{{itemLista.quantidade}}</ion-label>
                     </ion-item>
-                    <ion-item color="primary" *ngFor="let itemAdicionar of itensListaNovo; let i = index">
-                        <ion-label Id="corLabel" (click)="alterarItem(itemAdicionar)">+ {{itemAdicionar.sNome}} - {{itemAdicionar.sUnidadeMedida}} </ion-label>
-                        <ion-label Id="corLabel" Class="direita">{{itemAdicionar.nQuantidade}}</ion-label>
+                    <ion-item color="primary" *ngFor="let itemAdicionar of itensListaNovo">
+                        <ion-label Id="corLabel" (click)="alterarItem(itemAdicionar)">+ {{itemAdicionar.nome}} - {{itemAdicionar.unidadeMedida}} </ion-label>
+                        <ion-label Id="corLabel" Class="direita">{{itemAdicionar.quantidade}}</ion-label>
                     </ion-item>
                 </ion-list>
                 <ion-button expand="full" (click)="salvarAlteracoes()">Salvar Alterações</ion-button>

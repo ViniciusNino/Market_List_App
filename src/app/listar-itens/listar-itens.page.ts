@@ -6,6 +6,7 @@ import { ModalSolicitacaoComponent } from './modal-solicitacao/modal-solicitacao
 import { IItemLista } from '../shared/itemLista/interfaces'
 import { ILista } from '../shared/Lista/interfaces'
 import { ListarItensApi } from './listar-itens.api'
+import { IItem } from '../shared/item/item.interfaces'
 
 @Component({
   selector: 'app-listar-itens',
@@ -33,17 +34,17 @@ export class ListarItensPage implements OnInit {
       this.lista = parametros
     });
 
-    this.itensListaApi = await this.listarItensApi.getItemListaPorListaId(this.lista.nIdLista);
+    this.itensListaApi = await this.listarItensApi.getItemListaPorListaId(this.lista.id);
   }
 
   async alterarItem(itemLista: IItemLista) {
     const alert = await this.alertController.create({
-      header: itemLista.sNome,
+      header: itemLista.nome,
       inputs: [
         {
           name: 'name',
           type: 'number',
-          value: itemLista.nQuantidade,
+          value: itemLista.quantidade,
           min: 0,
         }
       ],
@@ -72,17 +73,17 @@ export class ListarItensPage implements OnInit {
   }
 
   atualizar(data: any, itemLista: IItemLista) {
-    if(itemLista.nIdItem != 0) {
-      itemLista.nQuantidade = data.name;
+    if(itemLista.id != 0) {
+      itemLista.quantidade = data.name;
     } else {
-      itemLista.nQuantidade = data.name; 
+      itemLista.quantidade = data.name; 
     }
      
     this.teveAlteracao = true;
   }
 
   excluir(itemLista: IItemLista) {
-    if(itemLista.nIdItem != 0) {
+    if(itemLista.id != 0) {
       this.itensListaApi.splice(this.itensListaApi.indexOf(itemLista), 1);
     } else
       this.itensListaNovo.splice(this.itensListaNovo.indexOf(itemLista), 1);
@@ -97,7 +98,7 @@ export class ListarItensPage implements OnInit {
           this.itensListaApi.push(item);
         });
       }
-      this.http.post(this.API_URL+ "itemLista/PostAlualizarItens?id="+this.lista.nIdLista, this.itensListaApi).subscribe((response) => {
+      this.http.post(this.API_URL+ "itemLista/PostAlualizarItens?id="+this.lista.id, this.itensListaApi).subscribe((response) => {
         if(response)
           this.cancelar();
       });
@@ -114,47 +115,39 @@ export class ListarItensPage implements OnInit {
 
   async adicionarItem() {
     const modal = await this.modalCtrl.create({
-      component: ModalSolicitacaoComponent
+      component: ModalSolicitacaoComponent,
+      componentProps: {
+        listaId: this.lista.id,
+        itensListaNovo: this.itensListaNovo
+      }
     });
-    modal.onDidDismiss().then((vmItensModal) =>{
-
-      vmItensModal.data.forEach(element => {
-        let existe = false;
-        for(let p = 0; p < this.itensListaApi.length; p++) {
-          if(element['sNome'] == this.itensListaApi[p]['sNome']){
-            this.itensListaApi[p]['nQuantidade'] = element['nQuantidade'] + this.itensListaApi[p]['nQuantidade'];
-            console.log(element['nQuantidade'] +" lItensLista "+ this.itensListaApi[p]['nQuantidade'])
-            p = this.itensListaApi.length;
-            existe = true;
-          }
-        }
-        if(existe)
-        vmItensModal.data.splice(element);
-      });
-      if(vmItensModal.data.length != 0){
-        if(this.itensListaNovo == null){
-          this.itensListaNovo = vmItensModal.data;
-          this.teveAlteracao = true;
-        }
-        else{
-          vmItensModal.data.forEach(element => {
-            let existe = false;
-            for(let i = 0; i < this.itensListaNovo.length; i++) {
-              if(element['nIdItem'] == this.itensListaNovo[i]['nIdItem']){
-                this.itensListaNovo[i]['nQuantidade'] = element['nQuantidade'] + this.itensListaNovo[i]['nQuantidade'];
-                i = this.itensListaNovo.length;
-                existe = true;
-              }
-            }
-            if(!existe)
-              this.itensListaNovo.push(element);
-          });
-          this.teveAlteracao = true;
+    modal.onDidDismiss().then(result =>{
+      if(result.data.itemAdicionado) {
+        this.teveAlteracao = true;
+        const itensLista = result.data.itensListaNovo as IItemLista[];
+        const idsItensListaApi = this.itensListaApi.map(x => x.itemId);
+        
+        const itensListaNovo = this.atualizarItensLista(idsItensListaApi, itensLista)        
+        if(itensListaNovo){
+          this.itensListaNovo = itensListaNovo;
         }
       }
     });
     return await modal.present();
   } 
+
+  atualizarItensLista(idsItensListaApi: number[], itensListaNovo: IItemLista[]) {
+    const itensAlterados = itensListaNovo.filter(x => idsItensListaApi.indexOf(x.itemId) !== -1);
+    
+    itensAlterados.forEach(itemLista => {
+      const item = this.itensListaApi.find(x => x.itemId == itemLista.itemId);
+      itemLista.quantidade = itemLista.quantidade + item.quantidade;
+      itemLista.id = item.id;
+      this.itensListaApi.splice(this.itensListaApi.indexOf(item), 1);
+    });
+
+    return itensListaNovo;    
+  }
 
   public testar(){
     console.log(this.itensListaNovo);
