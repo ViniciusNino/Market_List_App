@@ -1,11 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, ROUTES } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { USUARIO } from '../shared/usuario/constants';
 import { IUsuario } from '../shared/usuario/interfaces';
 import { HomeSolicitanteApi } from './home-solicitante.api';
 import { ILista } from '../shared/Lista/interfaces';
-import { NavController } from '@ionic/angular';
 import { ROUTES_COMPONENTS } from '../app-const.route';
 
 @Component({
@@ -19,17 +17,16 @@ export class HomeSolicitantePage implements OnInit {
 
   constructor (
     private router: Router,
-    private navCtrl: NavController,
     readonly homeSolicitanteApi: HomeSolicitanteApi
     ) {}
 
   async ngOnInit() {
     this.usuario = JSON.parse(localStorage.getItem(USUARIO.USUARIOAUTENTICAR));
-    this.listas = await this.homeSolicitanteApi.getListPorUnidade(this.usuario.unidadeId)
+    this.listas = await this.homeSolicitanteApi.getListPorUnidade(this.usuario.unidadeId);
   }
-  
+
   public cadastrarNovaLista(){
-    this.router.navigateByUrl("solicitacao");
+    this.router.navigateByUrl(ROUTES_COMPONENTS.SOLICITACAO);
   }
 
   public selecionarLista(lista){

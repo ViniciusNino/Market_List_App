@@ -6,7 +6,7 @@ import { ModalSolicitacaoComponent } from './modal-solicitacao/modal-solicitacao
 import { IItemLista } from '../shared/itemLista/interfaces'
 import { ILista } from '../shared/Lista/interfaces'
 import { ListarItensApi } from './listar-itens.api'
-import { IItem } from '../shared/item/item.interfaces'
+import { ROUTES_COMPONENTS } from '../app-const.route'
 
 @Component({
   selector: 'app-listar-itens',
@@ -26,8 +26,7 @@ export class ListarItensPage implements OnInit {
     public alertController: AlertController,
     private activateRoute: ActivatedRoute, 
     private router: Router, 
-    private modalCtrl: ModalController) { 
-  }
+    private modalCtrl: ModalController) {}
 
   async ngOnInit() {
     this.activateRoute.queryParams.subscribe((parametros: ILista) => {
@@ -108,9 +107,9 @@ export class ListarItensPage implements OnInit {
   }
 
   public cancelar() {
-    this.itensListaNovo = null;
-    this.itensListaApi = null;
-    this.router.navigateByUrl("home-solicitante");
+    this.router.navigateByUrl(ROUTES_COMPONENTS.HOME_SOLICITANTE)
+               .then(nav => {window.location.reload();
+    });
   }
 
   async adicionarItem() {

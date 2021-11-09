@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { IItem } from "../shared/item/item.interfaces";
+import { ILista } from "../shared/Lista/interfaces";
 import { HttpProvider } from "../shared/providers/http.providers";
 import { SOLICITACAO } from "./solicitacao.endpoint";
 
@@ -16,7 +17,7 @@ export class SolicitacaoApi {
         return this.http.get<IItem[]>(SOLICITACAO.GET_ITEM, params).toPromise();
     }
 
-    async postItensParaComprar(parans: IItem[]): Promise<boolean> {
+    async postItensParaComprar(parans: ILista): Promise<boolean> {
 
         return this.http.post<boolean>(SOLICITACAO.POST_ITENS_COMPRA, parans).toPromise();
     }

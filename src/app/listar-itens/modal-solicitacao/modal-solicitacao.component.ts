@@ -20,7 +20,6 @@ export class ModalSolicitacaoComponent implements OnInit {
 
   constructor(
     private modalCtrl: ModalController,
-    public http: HttpClient,
     readonly solicitacaoApi: SolicitacaoApi
     ) { }
 

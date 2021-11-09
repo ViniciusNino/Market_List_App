@@ -5,6 +5,9 @@ import { IUsuario } from '../shared/usuario/interfaces';
 import { IItem } from '../shared/item/item.interfaces';
 import { SolicitacaoApi } from './socilitacao.api';
 import { IItemLista } from '../shared/itemLista/interfaces';
+import { ROUTES_COMPONENTS } from '../app-const.route';
+import { MENSAGEM_SOLICITACAO } from './solicitacao.const';
+import { ILista } from '../shared/Lista/interfaces';
 
 @Component({
   selector: 'app-solicitacao',
@@ -13,6 +16,7 @@ import { IItemLista } from '../shared/itemLista/interfaces';
 })
 export class SolicitacaoPage implements OnInit {
   itens: IItem[];
+  lista: ILista;
   usuarioLogado: IUsuario;
 
   constructor(
@@ -22,29 +26,55 @@ export class SolicitacaoPage implements OnInit {
     
     ngOnInit() {
     this.usuarioLogado = JSON.parse(localStorage.getItem(USUARIO.USUARIOAUTENTICAR));
-    this.listar_itens()
+    this.listar_itens();
+    this.lista = this.montarLista();
   }
 
-  async listar_itens()
-  {
+  async listar_itens() {
     this.itens = await this.solicitacaoApi.getItemPorUnidade(this.usuarioLogado.unidadeId);
   }
 
-  async confirmar()
-  {
-    const itensParaCompra = this.montarListaCompra(this.itens)
-    if(itensParaCompra.length > 0){
-      const salvo = await this.solicitacaoApi.postItensParaComprar(itensParaCompra);
+  montarLista = (): ILista => {
+    const lista = {
+      id: 0,
+      usuarioId: this.usuarioLogado.id,
+      unidadeId: this.usuarioLogado.unidadeId,
+      nome: '',
+      nomeUsuario: '',
+      cadastro: null,
+      itensLista: []
+    }
+    
+    return lista;
+  }
+
+  async confirmar(lista: ILista)
+  {    
+    lista.itensLista = this.montarListaCompra(this.itens)
+    if(lista.itensLista.length > 0 && lista.nome){
+      const salvo = await this.solicitacaoApi.postItensParaComprar(lista);
       if(salvo){
         this.cancelar()
       }
-    } else{
-      alert("Selecione no mínimo 1 item para compra.")
+    } else {
+      this.montarAlerta(lista);
     }
   }
+
+  montarAlerta(lista: ILista) {
+    let mensagem = '';
+    if (!lista.itensLista.length) {
+      mensagem = MENSAGEM_SOLICITACAO.ITEM_COMPRA_VAZIO;
+    } if (!lista.nome) {
+      if (mensagem) {
+        mensagem = mensagem + ' e ';
+      }
+      mensagem = mensagem + MENSAGEM_SOLICITACAO.NOME_LISTA_VAZIO + '.';
+    }
+    alert(mensagem);
+  }
   
-  montarListaCompra(itens: IItem[])
-  {
+  montarListaCompra(itens: IItem[])  {
     let itensListaNovo = [] as IItemLista[];    
     const itensSelecionados = itens.filter(x => x.quantidade > 0);    
     itensSelecionados.forEach(item => {
@@ -58,6 +88,9 @@ export class SolicitacaoPage implements OnInit {
   }
 
   cancelar() {
-    this.router.navigateByUrl("home-solicitante");
+    this.router.navigateByUrl(ROUTES_COMPONENTS.HOME_SOLICITANTE)
+               .then(nav => {
+                 window.location.reload();
+            });
   }
 }

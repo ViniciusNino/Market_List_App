@@ -5,6 +5,7 @@ import { LoginApi } from './login.api';
 import { IDadosAutenticacao, IUsuario } from '../shared/usuario/interfaces';
 import { TipoPerfilUsuario } from '../shared/usuario/enums';
 import { USUARIO } from '../shared/usuario/constants';
+import { ROUTES_COMPONENTS } from '../app-const.route';
 
 @Component({
   selector: 'app-login',
@@ -35,9 +36,9 @@ export class LoginPage implements OnInit {
     if (this.usuario.id > 0) {
       localStorage.setItem(USUARIO.USUARIOAUTENTICAR, JSON.stringify(this.usuario));
       if(this.usuario.perfilId == TipoPerfilUsuario.Solicitante ) {
-        this.router.navigateByUrl("home-solicitante");
+        this.router.navigateByUrl(ROUTES_COMPONENTS.HOME_SOLICITANTE);
       } else {
-        this.router.navigateByUrl("home"); 
+        this.router.navigateByUrl(ROUTES_COMPONENTS.HOME); 
       }
     } else {
       alert("Usuário ou Senha Inválido")

@@ -6,11 +6,14 @@
 
 <ion-content color="primary">
     <ion-list>
+        <ion-item>
+            <ion-input name="Lista" [(ngModel)]="lista.nome" type="text" placeholder="Escolha um nome para lista" ></ion-input>
+        </ion-item>
         <ion-item *ngFor="let item of itens" color="primary">
             <ion-label>{{item.nome}} - {{item.unidadeMedida}} </ion-label>
             <ion-input cssClass="direita" [(ngModel)]="item.quantidade" type="number" min="0" placeholder="0"></ion-input>
         </ion-item>
     </ion-list>
-    <ion-button expand="full" (click)="confirmar()">Confirmar Lista</ion-button>
+    <ion-button expand="full" (click)="confirmar(lista)">Confirmar Lista</ion-button>
     <ion-button expand="full" (click)="cancelar()">Cancelar</ion-button>
 </ion-content>
