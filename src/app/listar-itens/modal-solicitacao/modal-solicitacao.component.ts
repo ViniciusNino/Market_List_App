@@ -6,6 +6,7 @@ import { SolicitacaoApi } from 'src/app/solicitacao/socilitacao.api';
 import { IItem } from 'src/app/shared/item/item.interfaces';
 import { IUsuario } from 'src/app/shared/usuario/interfaces';
 import { IItemLista } from 'src/app/shared/itemLista/interfaces';
+import { StatusItemLista } from 'src/app/shared/itemLista/enum';
 
 @Component({
   selector: 'app-modal-solicitacao',
@@ -49,7 +50,8 @@ export class ModalSolicitacaoComponent implements OnInit {
           quantidade: item.quantidade,
           nome: item.nome,
           unidadeMedida: item.unidadeMedida,
-          listaId: this.listaId
+          listaId: this.listaId,
+          statusItemListaId: StatusItemLista.Solicitado
         } as IItemLista;
         itensListaNova.push(itemLista);
       });

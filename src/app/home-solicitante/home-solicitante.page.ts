@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { USUARIO } from '../shared/usuario/constants';
 import { IUsuario } from '../shared/usuario/interfaces';

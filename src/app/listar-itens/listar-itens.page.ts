@@ -7,6 +7,7 @@ import { IItemLista } from '../shared/itemLista/interfaces'
 import { ILista } from '../shared/Lista/interfaces'
 import { ListarItensApi } from './listar-itens.api'
 import { ROUTES_COMPONENTS } from '../app-const.route'
+import { StatusItemLista } from '../shared/itemLista/enum'
 
 @Component({
   selector: 'app-listar-itens',
@@ -73,7 +74,10 @@ export class ListarItensPage implements OnInit {
 
   atualizar(data: any, itemLista: IItemLista) {
     if(itemLista.id != 0) {
+      this.itensListaApi.splice(this.itensListaApi.indexOf(itemLista), 1);
+      itemLista.statusItemListaId = StatusItemLista.Atualizado;
       itemLista.quantidade = data.name;
+      this.itensListaNovo.push(itemLista);
     } else {
       itemLista.quantidade = data.name; 
     }
@@ -84,29 +88,26 @@ export class ListarItensPage implements OnInit {
   excluir(itemLista: IItemLista) {
     if(itemLista.id != 0) {
       this.itensListaApi.splice(this.itensListaApi.indexOf(itemLista), 1);
+      itemLista.statusItemListaId = StatusItemLista.Excluido;
+      this.itensListaNovo.push(itemLista);
     } else
       this.itensListaNovo.splice(this.itensListaNovo.indexOf(itemLista), 1);
 
     this.teveAlteracao = true;
   }
 
-  public salvarAlteracoes() {
-    if(this.teveAlteracao){
-      if(this.itensListaNovo != null){
-        this.itensListaNovo.forEach(item => {
-          this.itensListaApi.push(item);
-        });
-      }
-      this.http.post(this.API_URL+ "itemLista/PostAlualizarItens?id="+this.lista.id, this.itensListaApi).subscribe((response) => {
-        if(response)
-          this.cancelar();
-      });
-    }else{
+  async salvarAlteracoes() {
+    if(this.teveAlteracao) {
+      const retorno = await this.listarItensApi.atualizarLista(this.itensListaNovo);
+      if(retorno)
+        this.cancelar();
+      
+    } else {
       alert("não teve alteração");
     }
   }
 
-  public cancelar() {
+  cancelar() {
     this.router.navigateByUrl(ROUTES_COMPONENTS.HOME_SOLICITANTE)
                .then(nav => {window.location.reload();
     });
@@ -142,13 +143,10 @@ export class ListarItensPage implements OnInit {
       const item = this.itensListaApi.find(x => x.itemId == itemLista.itemId);
       itemLista.quantidade = itemLista.quantidade + item.quantidade;
       itemLista.id = item.id;
+      itemLista.statusItemListaId = StatusItemLista.Atualizado;
       this.itensListaApi.splice(this.itensListaApi.indexOf(item), 1);
     });
 
     return itensListaNovo;    
-  }
-
-  public testar(){
-    console.log(this.itensListaNovo);
-  }
+  } 
 }

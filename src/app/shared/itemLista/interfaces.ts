@@ -5,5 +5,6 @@ export interface IItemLista {
     quantidade: number,
     usuarioLogadoId: number,
     itemId: number,
-    listaId: number
+    listaId: number,
+    statusItemListaId: number,
 }
