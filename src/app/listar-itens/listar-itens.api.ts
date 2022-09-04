@@ -1,6 +1,6 @@
+import { IListaAtualizar } from './../shared/itemLista/interfaces';
 import { Injectable } from "@angular/core";
 import { IItemLista } from "../shared/itemLista/interfaces";
-import { ILista } from "../shared/Lista/interfaces";
 import { HttpProvider } from "../shared/providers/http.providers";
 import { LISTAR_ITENS } from "./listar-itens.endpoints";
 
@@ -18,7 +18,7 @@ export class ListarItensApi {
     }
 
 
-    async atualizarLista(itensLista: IItemLista[]): Promise<boolean> {
+    async atualizarLista(itensLista: IListaAtualizar): Promise<boolean> {
 
         return this.http.post<boolean>(LISTAR_ITENS.ATUALIZAR_LISTA, itensLista).toPromise();
     }

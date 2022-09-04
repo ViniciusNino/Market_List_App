@@ -8,3 +8,15 @@ export interface IItemLista {
     listaId: number,
     statusItemListaId: number,
 }
+
+export interface IListaAtualizar {
+    listaId: number, 
+    usuarioLogadoId: number,
+    ItensLista: IItemListaAtualizar[]
+}
+
+export interface IItemListaAtualizar {
+    id: number, 
+    quantidade: number,
+    itemId: number,
+}
