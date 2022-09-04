@@ -7,10 +7,10 @@
 <ion-content color="primary">
   <ion-list>
       <ion-item *ngFor="let item of itens" color="primary">
-          <ion-label>{{item.sNome}} - {{item.sUnidadeMedida}} </ion-label>
-          <ion-input cssClass="direita" [(ngModel)]="item.nQuantidade" type="number" min="0" placeholder="0"></ion-input>
+          <ion-label>{{item.nome}} - {{item.unidadeMedida}} </ion-label>
+          <ion-input cssClass="direita" [(ngModel)]="item.quantidade" type="number" min="0" placeholder="0"></ion-input>
       </ion-item>
   </ion-list>
-  <ion-button expand="full" (click)="adicionar()">Adicionar Itens</ion-button>
+  <ion-button expand="full" (click)="adicionar(itens)">Adicionar Itens</ion-button>
   <ion-button expand="full" (click)="cancelar()">Cancelar</ion-button>
 </ion-content>

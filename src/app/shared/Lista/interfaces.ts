@@ -1,6 +1,11 @@
+import { IItem } from "../item/item.interfaces";
+import { IItemLista } from "../itemLista/interfaces";
+
 export interface ILista {
-    nIdLista: number,
-    sNome: string,
-    sNomeUsuario: string,
-    dCadastro: Date
+    id: number,
+    usuarioId: number,
+    nome: string,
+    nomeUsuario: string,
+    cadastro: Date,
+    itensLista: IItemLista[]
 }

@@ -1,5 +1,22 @@
 export interface IItemLista {
-    sNome: string,
-    sUnidadeMedida: string,
-    nQuantidade: number
+    id: number, 
+    nome: string,
+    unidadeMedida: string,
+    quantidade: number,
+    usuarioLogadoId: number,
+    itemId: number,
+    listaId: number,
+    statusItemListaId: number,
+}
+
+export interface IListaAtualizar {
+    listaId: number, 
+    usuarioLogadoId: number,
+    ItensLista: IItemListaAtualizar[]
+}
+
+export interface IItemListaAtualizar {
+    id: number, 
+    quantidade: number,
+    itemId: number,
 }
