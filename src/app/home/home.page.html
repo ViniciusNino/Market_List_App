@@ -1,13 +1,31 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>home</ion-title>
+    <div class="header">
+      <ion-title class="ion-title">Comprador</ion-title>
+      <a href="/#/logout" style="color: #f8f5f5">Sair</a>
+    </div>
   </ion-toolbar>
 </ion-header>
 
-<ion-content id="homeContent" scroll="false" class="padding">
-  <div class="row">
-      <span class="text-center blackBold">Menu</span>
-      <a href="/#/logout" class="blackBold" style="float: right;">Sair</a>
-      <h1>Teste</h1>
-  </div>
+<ion-content color="primary" padding>
+  <form #form="ngForm">
+    <ion-grid>
+      <ion-row justify-content-center>
+        <ion-list class="ion-padding" *ngFor="let unidade of unidades">
+          <ion-list-header color="primary" class="lista" (click)="onExibirLista(unidade)">
+            <ion-label>{{unidade.nome}}</ion-label>
+          </ion-list-header>
+          <div *ngIf="unidade.exibirLista">
+            <ion-item color="primary" *ngFor="let lista of unidade.listas" (click)="onSelecionarLista(lista)">
+              <div class="icon_checked">
+                <img src="../../assets/icon/icon-selected2.png" *ngIf="lista.selecionado">
+              </div>
+              {{lista.nome}} - {{lista.cadastro | date}}
+            </ion-item>
+          </div>
+        </ion-list>
+      </ion-row>
+    </ion-grid>
+    <ion-button expand="full" (click)="onJuntarListas()">Juntar listas</ion-button>
+  </form>
 </ion-content>

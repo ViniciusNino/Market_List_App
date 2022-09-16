@@ -36,4 +36,6 @@ export class HomeSolicitantePage implements OnInit {
       queryParams: lista,
     });
   }
+
+  checkLista() {}
 }
