@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { AlertController, ModalController } from "@ionic/angular";
 import { ROUTES_COMPONENTS } from "../app-const.route";
+import { ObjectTrafic } from "../service/objec-traffic";
 import { StatusItemLista } from "../shared/itemLista/enum";
 import { IItemLista } from "../shared/itemLista/interfaces";
 import { ILista } from "../shared/Lista/interfaces";
@@ -27,11 +28,12 @@ export class ListarItensPage implements OnInit {
   teveAlteracao: boolean = false;
 
   constructor(
-    readonly listarItensApi: ListarItensApi,
-    public alertController: AlertController,
-    private activateRoute: ActivatedRoute,
-    private router: Router,
-    private modalCtrl: ModalController
+    private readonly listarItensApi: ListarItensApi,
+    public readonly alertController: AlertController,
+    private readonly activateRoute: ActivatedRoute,
+    private readonly router: Router,
+    private readonly objectTrafic: ObjectTrafic,
+    private readonly modalCtrl: ModalController
   ) {}
 
   async ngOnInit() {
@@ -185,6 +187,7 @@ export class ListarItensPage implements OnInit {
         return null;
       });
 
+    this.objectTrafic.onDeletarLista(this.lista);
     this.cancelar();
   }
 }

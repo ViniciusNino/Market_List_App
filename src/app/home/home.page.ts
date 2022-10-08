@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { USUARIO } from "../shared/usuario/constants";
 import { IUsuario } from "../shared/usuario/interfaces";
-import { ILista } from "./../shared/Lista/interfaces";
+import { IAgrupadorListas, ILista } from "./../shared/Lista/interfaces";
 import { IUnidade } from "./../shared/Unidade/interface";
 import { HomeApi } from "./home.api";
 
@@ -13,6 +13,8 @@ import { HomeApi } from "./home.api";
 export class HomePage implements OnInit {
   usuario: IUsuario;
   unidades: IUnidade[];
+  descricao: string = "";
+  agrupadorListas: IAgrupadorListas;
 
   constructor(private readonly homeApi: HomeApi) {}
 
@@ -41,5 +43,35 @@ export class HomePage implements OnInit {
     lista.selecionado = !lista.selecionado;
   }
 
-  onJuntarListas() {}
+  async onJuntarListas() {
+    const result = this.homeApi
+      .setAgrupadoListas(this.criarAgrupadorListas())
+      .catch((error) => {
+        const errorMessage = error.split(", ");
+        return null;
+      });
+    if (result) {
+      return result;
+    }
+  }
+
+  criarAgrupadorListas(): IAgrupadorListas {
+    return (this.agrupadorListas = {
+      descricao: this.descricao,
+      usuarioId: this.usuario.id,
+      listaIds: this.getIdsListasSelecionadas(),
+    });
+  }
+
+  getIdsListasSelecionadas(): number[] {
+    const ids: number[] = [];
+    this.unidades.forEach((unidade) => {
+      unidade.listas
+        .filter((x) => x.selecionado)
+        .map((x) => x.id)
+        .forEach((id) => ids.push(id));
+    });
+
+    return ids;
+  }
 }

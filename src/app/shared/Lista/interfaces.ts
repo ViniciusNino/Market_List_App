@@ -9,3 +9,10 @@ export interface ILista {
   selecionado: boolean;
   itensLista: IItemLista[];
 }
+
+export interface IAgrupadorListas {
+  usuarioId: number;
+  listaIds: number[];
+  status?: number;
+  descricao: string;
+}
