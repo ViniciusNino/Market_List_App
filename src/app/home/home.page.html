@@ -10,6 +10,10 @@
 <ion-content color="primary" padding>
   <form #form="ngForm">
     <ion-grid>
+      <ion-item>
+        <ion-input name="Lista" [(ngModel)]="descricao" type="text" placeholder="Descrição para agrupar">
+        </ion-input>
+      </ion-item>
       <ion-row justify-content-center>
         <ion-list class="ion-padding" *ngFor="let unidade of unidades">
           <ion-list-header color="primary" class="lista" (click)="onExibirLista(unidade)">
@@ -20,7 +24,7 @@
               <div class="icon_checked">
                 <img src="../../assets/icon/icon-selected2.png" *ngIf="lista.selecionado">
               </div>
-              {{lista.nome}} - {{lista.cadastro | date}}
+              {{lista.nome}} - {{lista.cadastro | date : 'dd MMM yyyy'}}
             </ion-item>
           </div>
         </ion-list>

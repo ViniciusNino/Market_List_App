@@ -18,8 +18,7 @@
                     <ion-list>
                         <ion-item color="primary" *ngFor="let lista of listas" (click)="selecionarLista(lista)">
                             <ion-label>{{lista.nome}} -
-                                {{lista.cadastro | date: 'dd-MM-yyyy'}} </ion-label>
-
+                                {{lista.cadastro | date: 'dd MMM yyyy'}} </ion-label>
                         </ion-item>
                     </ion-list>
                     <ion-button expand="full" (click)="cadastrarNovaLista()">Cadastrar Nova Lista</ion-button>
