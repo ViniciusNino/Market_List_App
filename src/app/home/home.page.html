@@ -24,7 +24,7 @@
               <div class="icon_checked">
                 <img src="../../assets/icon/icon-selected2.png" *ngIf="lista.selecionado">
               </div>
-              {{lista.nome}} - {{lista.cadastro | date}}
+              {{lista.nome}} - {{lista.cadastro | date : 'dd MMM yyyy'}}
             </ion-item>
           </div>
         </ion-list>

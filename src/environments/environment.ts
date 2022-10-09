@@ -6,7 +6,7 @@ export const environment = {
   production: false,
 };
 
-export const API = "https://localhost:5000/";
+export const API = "https://localhost:5001/";
 // export const API = "http://ec2-44-205-43-28.compute-1.amazonaws.com/";
 
 /*
