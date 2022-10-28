@@ -14,7 +14,7 @@
         <ion-input name="Lista" [(ngModel)]="descricao" type="text" placeholder="Descrição para agrupar">
         </ion-input>
       </ion-item>
-      <ion-row justify-content-center>
+      <!-- <ion-row justify-content-center>
         <ion-list class="ion-padding" *ngFor="let unidade of unidades">
           <ion-list-header color="primary" class="lista" (click)="onExibirLista(unidade)">
             <ion-label>{{unidade.nome}}</ion-label>
@@ -29,7 +29,16 @@
           </div>
         </ion-list>
       </ion-row>
-    </ion-grid>
+    </ion-grid> -->
+    <ion-list>
+      <ion-item *ngFor="let unidade of unidades">
+        <ion-select placeholder="Seleciona a(s) lista(s) da unidade {{unidade.nome}}" [multiple]="true">
+          <ion-select-option value={{lista.Id}} *ngFor="let lista of unidade.listas">Apples</ion-select-option>
+          <ion-select-option value="oranges">Oranges</ion-select-option>
+          <ion-select-option value="bananas">Bananas</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
     <ion-button expand="full" (click)="onJuntarListas()">Juntar listas</ion-button>
   </form>
 </ion-content>

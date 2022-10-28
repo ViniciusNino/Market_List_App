@@ -1,17 +1,37 @@
 import { Injectable } from "@angular/core";
 import { HttpProvider } from "../shared/providers/http.providers";
-import { IDadosAutenticacao, IUsuario } from "../shared/usuario/interfaces";
+import { ILogin } from "../shared/usuario/interfaces";
+import {
+  ICadastroUsuario,
+  IValidacaoEmail,
+} from "./../shared/usuario/interfaces";
 import { Login } from "./login.endpoints";
 
 @Injectable({
-    providedIn: 'root'
-  })
-
+  providedIn: "root",
+})
 export class LoginApi {
-    constructor(readonly http: HttpProvider) {}
+  constructor(readonly http: HttpProvider) {}
 
-    async getUsuarioAutenticado(dadosAutenticacao: IDadosAutenticacao): Promise<IUsuario> {
+  async getUsuarioAutenticado(login: ILogin): Promise<any> {
+    return this.http.post<any>(Login.AUTENTICAR, login).toPromise();
+  }
 
-        return this.http.get<IUsuario>(Login.AUTENTICAR, dadosAutenticacao).toPromise();
-    }
+  async setRegistrarUsuario(cadastro: ICadastroUsuario): Promise<any> {
+    return this.http.post<any>(Login.REGISTRAR, cadastro).toPromise();
+  }
+
+  async reenviarValidacaoEmail(email: IValidacaoEmail): Promise<any> {
+    return this.http
+      .post<any>(Login.REENVIAR_VALIDACAO_EMAIL, email)
+      .toPromise();
+  }
+
+  async solicitarSenhaTemporaria(email: string): Promise<any> {
+    const validacaoEmail = { email: email };
+
+    return this.http
+      .post<any>(Login.ENVIAR_EMAIL_SENHA, validacaoEmail)
+      .toPromise();
+  }
 }
