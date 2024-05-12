@@ -6,14 +6,14 @@ import {
   LoadingController,
   ModalController,
   NavController,
-  ToastController,
+  ToastController
 } from "@ionic/angular";
 import { ROUTES_COMPONENTS } from "src/app/app-const.route";
 import { getToast } from "src/app/shared/toast/constants";
 import { IToast } from "src/app/shared/toast/interface";
 import { USUARIO } from "src/app/shared/usuario/constants";
 import { TipoPerfilUsuario } from "src/app/shared/usuario/enums";
-import { ILogin, IUsuario } from "src/app/shared/usuario/interfaces";
+import { ILogin, IUsuario, IValidacaoEmail } from "src/app/shared/usuario/interfaces";
 import { LoginApi } from "../login.api";
 import { SenhaTempComponent } from "../senha-temp/senha-temp.component";
 
@@ -26,7 +26,9 @@ export class SignInComponent implements OnInit {
   public usuario: IUsuario;
   public onLoginForm: FormGroup;
   public dadosAutenticacao: ILogin;
+  public validacaoEmail: IValidacaoEmail;
   loading: boolean = false;
+  validarEmail: boolean = false;
   toast: IToast = getToast();
   showToast = false;
 
@@ -43,6 +45,7 @@ export class SignInComponent implements OnInit {
 
   ngOnInit() {
     this.dadosAutenticacao = { Email: "", Senha: "" };
+    this.validacaoEmail = { Email: "" };
     this.createFormLogin();
   }
 
@@ -100,25 +103,29 @@ export class SignInComponent implements OnInit {
   }
 
   async login() {
-    this.usuario = await this.loginApi
+    this.loading = true;
+    this.dadosAutenticacao.Email = this.onLoginForm.value.email;
+    this.dadosAutenticacao.Senha = this.onLoginForm.value.password;
+
+    const result = await this.loginApi
       .getUsuarioAutenticado(this.dadosAutenticacao)
       .catch((error) => {
-        console.error(error);
+        const errorMessage = error.split(", ");
+        this.displayToast(false, "Erro de login", errorMessage[1]);
+        this.validarEmail = errorMessage[0].includes("403");
+        this.loading = false;
         return null;
       });
-    if (this.usuario && this.usuario.id > 0) {
-      localStorage.setItem(
-        USUARIO.USUARIOAUTENTICAR,
-        JSON.stringify(this.usuario)
-      );
-      if (this.usuario.perfilId == TipoPerfilUsuario.Solicitante) {
+    this.loading = false;
+    if (result.statusResult === 200) {
+      this.usuario = result.response.usuario
+      localStorage.setItem(USUARIO.USUARIOAUTENTICAR, JSON.stringify(this.usuario));
+      if (this.usuario.tipoId == TipoPerfilUsuario.Administrador) {
         this.router.navigateByUrl(ROUTES_COMPONENTS.HOME_SOLICITANTE);
       } else {
         this.router.navigateByUrl(ROUTES_COMPONENTS.HOME);
       }
-    } else {
-      alert("Usuário ou Senha Inválido");
-    }
+    } 
   }
 
   async abrirModal() {
@@ -130,7 +137,7 @@ export class SignInComponent implements OnInit {
     });
     await modal.present();
     modal.onDidDismiss().then((result) => {
-      if (result.data?.email) {
+      if (result.data.email) {
       }
     });
   }
@@ -153,6 +160,23 @@ export class SignInComponent implements OnInit {
       );
       this.loading = false;
     }
+  }
+
+  async reenviarValidacaoEmail(){
+    this.loading = true;
+    this.validacaoEmail.Email = this.dadosAutenticacao.Email;
+    const result = await this.loginApi
+      .reenviarValidacaoEmail(this.validacaoEmail)
+      .catch((error) => {
+        const errorMessage = error.split(", ");
+        this.displayToast(false, "Erro ao validar Email", errorMessage[1]);
+        this.loading = false;
+        return null;
+      });
+    if(result.statusResult === 200){
+      this.displayToast(true, result.response, "Verifique seu email e valide sua conta.");
+    }
+    this.loading = false;  
   }
 
   displayToast(sucess: boolean, title: string, notes: string) {
