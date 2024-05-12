@@ -1,7 +1,7 @@
 export interface IUsuario {
   id: number;
   nome: string;
-  perfilId: number;
+  tipoId: number;
   unidadeId?: number;
   nomeUnidade: string;
 }

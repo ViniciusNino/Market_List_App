@@ -55,8 +55,14 @@
       </ion-text>
     </p>
 
+    <p text-right tappable (click)="reenviarValidacaoEmail()" *ngIf="validarEmail" class="paz">
+      <ion-text color="light">
+        <strong>Reenviar validação email</strong>
+      </ion-text>
+    </p>
+
     <div>
-      <ion-button class="button" icon-left size="medium" expand="full" shape="round" color="dark" (click)="goToHome()"
+      <ion-button class="button" icon-left size="medium" expand="full" shape="round" color="dark" (click)="login()"
         [disabled]="!onLoginForm.valid" tappable>
         <ion-icon name="log-in"></ion-icon>
         Signin
