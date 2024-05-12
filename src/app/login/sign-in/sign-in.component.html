@@ -1,0 +1,79 @@
+<ion-content padding class="animated fadeIn login auth-page">
+  <div class="theme-bg"></div>
+  <div class="auth-content">
+
+    <!-- Logo -->
+    <div padding-horizontal text-center class="animated fadeInDown">
+      <h4 no-margin>
+        <ion-text color="light" class="fw700">
+          Market List
+        </ion-text>
+      </h4>
+      <div class="logo"></div>
+    </div>
+
+    <!-- Login form -->
+    <form [formGroup]="onLoginForm" class="list-form">
+      <ion-item no-padding class="animated fadeInUp">
+        <ion-label position="floating">
+          <ion-icon name="mail" item-start></ion-icon>
+          Email
+        </ion-label>
+        <ion-input color="secondary" type="email" formControlName="email"></ion-input>
+      </ion-item>
+      <p ion-text class="text08"
+        *ngIf="onLoginForm.get('email').touched && onLoginForm.get('email').hasError('required')">
+        <ion-text color="danger">
+          Email obrigatório
+        </ion-text>
+      </p>
+      <p ion-text class="text08"
+        *ngIf="onLoginForm.get('email').touched && onLoginForm.get('email').hasError('pattern')">
+        <ion-text color="danger">
+          Formato de email incorreto
+        </ion-text>
+      </p>
+
+      <ion-item no-padding class="animated fadeInUp">
+        <ion-label position="floating">
+          <ion-icon name="lock-closed" item-start></ion-icon>
+          Password
+        </ion-label>
+        <ion-input color="secondary" type="password" formControlName="password"></ion-input>
+      </ion-item>
+      <p ion-text color="danger" class="text08"
+        *ngIf="onLoginForm.get('password').touched && onLoginForm.get('password').hasError('required')">
+        <ion-text color="danger">
+          Password obrigatório
+        </ion-text>
+      </p>
+    </form>
+
+    <p text-right tappable (click)="abrirModal()" class="paz">
+      <ion-text color="light">
+        <strong>Esqueceu senha?</strong>
+      </ion-text>
+    </p>
+
+    <div>
+      <ion-button class="button" icon-left size="medium" expand="full" shape="round" color="dark" (click)="goToHome()"
+        [disabled]="!onLoginForm.valid" tappable>
+        <ion-icon name="log-in"></ion-icon>
+        Signin
+      </ion-button>
+
+    </div>
+
+    <div text-center margin-top>
+      <span (click)="goToRegister()" class="paz" tappable>
+        <ion-text color="light">
+          <strong>Criar conta?</strong>
+        </ion-text>
+      </span>
+    </div>
+
+  </div>
+</ion-content>
+
+<app-loader *ngIf="loading"></app-loader>
+<app-toast [show]="showToast" [toast]="toast"></app-toast>

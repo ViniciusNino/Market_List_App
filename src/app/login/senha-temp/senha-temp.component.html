@@ -1,0 +1,41 @@
+<ion-content padding class="animated fadeIn login auth-page">
+  <div class="theme-bg"></div>
+  <div class="auth-content">
+    <div class="close">
+      <ion-icon class="close-icon" name="close" (click)="onClose()"></ion-icon>
+    </div>
+
+    <div class="form-senha">
+      <form [formGroup]="onSenhaForm" class="list-form">
+        <ion-item no-padding class="animated fadeInUp">
+          <ion-label position="floating">
+            <ion-icon name="mail" item-start></ion-icon>
+            Email
+          </ion-label>
+          <ion-input color="secondary" type="email" formControlName="email"></ion-input>
+        </ion-item>
+        <p ion-text class="text08"
+          *ngIf="onSenhaForm.get('email').touched && onSenhaForm.get('email').hasError('required')">
+          <ion-text color="danger">
+            Email obrigatório
+          </ion-text>
+        </p>
+        <p ion-text class="text08"
+          *ngIf="onSenhaForm.get('email').touched && onSenhaForm.get('email').hasError('pattern')">
+          <ion-text color="danger">
+            Formato de email incorreto
+          </ion-text>
+        </p>
+      </form>
+    </div>
+
+    <div>
+      <ion-button icon-left size="medium" expand="full" shape="round" color="dark" (click)="onClose(email)"
+        [disabled]="!onSenhaForm.valid" tappable>
+        <ion-icon name="log-in"></ion-icon>
+        Send
+      </ion-button>
+
+    </div>
+  </div>
+</ion-content>

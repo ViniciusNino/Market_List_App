@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
+import { ObjectTrafic } from "../../service/objec-traffic";
 import { ROUTES_COMPONENTS } from "../app-const.route";
-import { ObjectTrafic } from "../service/objec-traffic";
 import { ILista } from "../shared/Lista/interfaces";
 import { USUARIO } from "../shared/usuario/constants";
 import { IUsuario } from "../shared/usuario/interfaces";

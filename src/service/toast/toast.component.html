@@ -1,0 +1,13 @@
+<div [ngClass]="!show ? 'toast' : 'toast show'">
+    <div class="toast-start">
+        <img src="../../assets/icon/icon-success.png" alt="img" *ngIf="toast.success">
+        <img src="../../assets/icon/icon-danger.png" alt="img" *ngIf="!toast.success">
+    </div>
+    <div class="toast-middle">
+        <p class="toast-middle-title">{{toast.title}}</p>
+        <p class="toast-middle-text">{{toast.text}}</p>
+    </div>
+    <div class="toast-end" (click)="onCloseToast()">
+        <img src="../../assets/icon/icon-close.png" alt="img">
+    </div>
+</div>

@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Observable, Subject } from "rxjs";
 
-import { ILista } from "../shared/Lista/interfaces";
+import { ILista } from "../app/shared/Lista/interfaces";
 
 @Injectable()
 export class ObjectTrafic {

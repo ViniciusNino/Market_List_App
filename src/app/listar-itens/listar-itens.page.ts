@@ -1,8 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { AlertController, ModalController } from "@ionic/angular";
+import { ObjectTrafic } from "../../service/objec-traffic";
 import { ROUTES_COMPONENTS } from "../app-const.route";
-import { ObjectTrafic } from "../service/objec-traffic";
 import { StatusItemLista } from "../shared/itemLista/enum";
 import { IItemLista } from "../shared/itemLista/interfaces";
 import { ILista } from "../shared/Lista/interfaces";
