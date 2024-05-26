@@ -50,5 +50,9 @@ export class HomeSolicitantePage implements OnInit {
     });
   }
 
+  cadastrarNovaUnidade() {
+    this.router.navigateByUrl(ROUTES_COMPONENTS.UNIDADE);
+  }
+
   checkLista() {}
 }

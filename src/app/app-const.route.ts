@@ -5,4 +5,5 @@ export const ROUTES_COMPONENTS = {
   HOME: "home",
   SIGN_IN: "login/sign-in",
   SIGN_UP: "login/sign-up",
+  UNIDADE: "unidade"
 };
