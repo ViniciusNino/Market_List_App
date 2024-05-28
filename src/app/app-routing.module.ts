@@ -25,6 +25,10 @@ const routes: Routes = [
   {
     path: 'listar-itens',
     loadChildren: () => import('./listar-itens/listar-itens.module').then( m => m.ListarItensPageModule)
+  },
+  {
+    path: 'unidade',
+    loadChildren: () => import('./unidade/unidade.module').then( m => m.UnidadePageModule)
   }
 
 

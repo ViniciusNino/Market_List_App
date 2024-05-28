@@ -5,3 +5,8 @@ export interface IUnidade {
   exibirLista: boolean;
   listas: ILista[];
 }
+
+export interface IUnidadeCadastro {
+  idUsuario: number;
+  nome: string;
+}
